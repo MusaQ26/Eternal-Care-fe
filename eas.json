@@ -1,0 +1,30 @@
+{
+  "cli": {
+    "version": ">= 16.0.0"
+  },
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://eternal-care-backend.vercel.app",
+        "EXPO_PUBLIC_GOOGLE_MAPS_KEY": "AIzaSyDlVpi-FxKBAqy3WLN3hGhzGVlfp-XpTbo",
+        "EXPO_PUBLIC_STRIPE_KEY": "pk_test_51TdDHsEHFR9TIPa52ntLruOmeF3Vm84cVOA1GvwvMkieNos9PuAMff2k9kMvf733yn0F5fcQ7VDQGmZnjeYt75at00lxEkFgot"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://eternal-care-backend.vercel.app",
+        "EXPO_PUBLIC_GOOGLE_MAPS_KEY": "AIzaSyDlVpi-FxKBAqy3WLN3hGhzGVlfp-XpTbo",
+        "EXPO_PUBLIC_STRIPE_KEY": "pk_test_51TdDHsEHFR9TIPa52ntLruOmeF3Vm84cVOA1GvwvMkieNos9PuAMff2k9kMvf733yn0F5fcQ7VDQGmZnjeYt75at00lxEkFgot"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
