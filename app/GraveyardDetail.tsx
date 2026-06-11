@@ -14,7 +14,7 @@ import AppHeader from "../components/ui/app-header";
 import { Colors } from "../constants/theme";
 
 type PlotStatus = "available" | "occupied" | "reserved";
-interface Plot { code: string; status: PlotStatus; price?: number; plotId?: string }
+interface Plot { code: string; status: PlotStatus; price?: number; plotId?: string; lat?: number; lng?: number }
 
 const API = process.env.EXPO_PUBLIC_API_URL ?? "";
 
@@ -41,6 +41,8 @@ export default function GraveyardDetail() {
             status: (p.status as PlotStatus) || "available",
             price: parseFloat(p.price) || 15000,
             plotId: p.id,
+            lat: p.lat != null ? parseFloat(p.lat) : undefined,
+            lng: p.lng != null ? parseFloat(p.lng) : undefined,
           })));
         }
       } catch { /* show empty state */ }
@@ -87,7 +89,7 @@ export default function GraveyardDetail() {
                 onPress={() =>
                   (router as any).push({
                     pathname: "/PlotDetail",
-                    params: { graveyardId: id, graveyardName: name, plotCode: plot.code, price: plot.price, plotId: plot.plotId ?? "" },
+                    params: { graveyardId: id, graveyardName: name, plotCode: plot.code, price: plot.price, plotId: plot.plotId ?? "", lat: plot.lat ?? "", lng: plot.lng ?? "" },
                   })
                 }
               >

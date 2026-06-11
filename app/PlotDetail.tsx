@@ -1,19 +1,29 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarButton from "../components/ui/avatar-button";
 import { Colors } from "../constants/theme";
 
 export default function PlotDetail() {
   const router = useRouter();
-  const { graveyardId, graveyardName, plotCode, price, plotId } = useLocalSearchParams<{
+  const { graveyardId, graveyardName, plotCode, price, plotId, lat, lng } = useLocalSearchParams<{
     graveyardId: string;
     graveyardName: string;
     plotCode: string;
     price: string;
     plotId?: string;
+    lat?: string;
+    lng?: string;
   }>();
+
+  const hasLocation = lat && lng && lat !== "" && lng !== "";
+
+  const openMap = () => {
+    const label = encodeURIComponent(`Plot ${plotCode} — ${graveyardName}`);
+    const url = `https://maps.apple.com/?ll=${lat},${lng}&q=${label}`;
+    Linking.openURL(url);
+  };
 
   const handleBook = () => {
     const { setBooking } = require("../utils/bookingStore");
@@ -73,7 +83,28 @@ export default function PlotDetail() {
             <Text style={styles.label}>Price</Text>
             <Text style={styles.priceValue}>PKR {Number(price || 15000).toLocaleString()}</Text>
           </View>
+
+          {hasLocation && (
+            <>
+              <View style={styles.divider} />
+              <View style={styles.row}>
+                <Text style={styles.label}>Latitude</Text>
+                <Text style={styles.value}>{parseFloat(lat!).toFixed(6)}</Text>
+              </View>
+              <View style={styles.divider} />
+              <View style={styles.row}>
+                <Text style={styles.label}>Longitude</Text>
+                <Text style={styles.value}>{parseFloat(lng!).toFixed(6)}</Text>
+              </View>
+            </>
+          )}
         </View>
+
+        {hasLocation && (
+          <Pressable style={styles.mapBtn} onPress={openMap}>
+            <Text style={styles.mapBtnText}>View Location on Map</Text>
+          </Pressable>
+        )}
 
         <Pressable style={styles.bookBtn} onPress={handleBook}>
           <Text style={styles.bookBtnText}>Book This Plot</Text>
@@ -113,6 +144,11 @@ const styles = StyleSheet.create({
   priceValue: { color: "#164A40", fontSize: 16, fontWeight: "800" },
   statusBadge: { backgroundColor: "#d1fae5", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
   statusText: { color: "#065f46", fontSize: 13, fontWeight: "600" },
+  mapBtn: {
+    borderWidth: 2, borderColor: "#164A40", borderRadius: 24, paddingVertical: 14,
+    alignItems: "center", marginBottom: 12,
+  },
+  mapBtnText: { color: "#164A40", fontWeight: "700", fontSize: 15 },
   bookBtn: {
     backgroundColor: "#164A40", borderRadius: 24, paddingVertical: 16,
     alignItems: "center",

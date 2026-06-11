@@ -24,6 +24,7 @@ import GoogleIcon from "../assets/images/google1.svg";
 import { Colors } from "../constants/theme";
 import api from "./utils/api";
 import { saveToken, saveUser } from "../utils/authStore";
+import { handleGoogleAuth } from "../utils/googleAuth";
 
 export default function Login() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function Login() {
   const [signupLayout, setSignupLayout] = useState<any>(null);
 
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   useEffect(() => {
     if (!loginLayout) return;
@@ -265,24 +267,18 @@ export default function Login() {
           <Text style={styles.orText}>OR LOGIN WITH</Text>
 
           <View style={styles.socialRow}>
-            <View style={styles.social}>
-              <SocialSvg
-                Icon={FacebookIcon}
-                size={36}
-              />
-            </View>
-            <View style={styles.social}>
-              <SocialSvg
-                Icon={MailIcon}
-                size={36}
-              />
-            </View>
-            <View style={styles.social}>
-              <SocialSvg
-                Icon={GoogleIcon}
-                size={36}
-              />
-            </View>
+            <Pressable
+              style={[styles.social, googleLoading && { opacity: 0.5 }]}
+              disabled={googleLoading}
+              onPress={async () => {
+                setGoogleLoading(true);
+                try { await handleGoogleAuth(router); }
+                catch (err: any) { alert(err?.message || 'Google sign-in failed'); }
+                finally { setGoogleLoading(false); }
+              }}
+            >
+              <SocialSvg Icon={GoogleIcon} size={36} />
+            </Pressable>
           </View>
         </View>
       </ScrollView>
