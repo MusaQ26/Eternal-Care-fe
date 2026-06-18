@@ -153,22 +153,27 @@ export default function Signup() {
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.actionText}>SIGN UP</Text>}
             </Pressable>  
 
-            <Text style={styles.orText}>OR LOGIN WITH</Text>
+            <Text style={styles.orText}>OR CONTINUE WITH</Text>
 
-            <View style={styles.socialRow}>
-              <Pressable
-                style={[styles.social, googleLoading && { opacity: 0.5 }]}
-                disabled={googleLoading}
-                onPress={async () => {
-                  setGoogleLoading(true);
-                  try { await handleGoogleAuth(router); }
-                  catch (err: any) { alert(err?.message || 'Google sign-in failed'); }
-                  finally { setGoogleLoading(false); }
-                }}
-              >
-                <SocialSvg Icon={GoogleIcon} size={36} />
-              </Pressable>
-            </View>
+            <Pressable
+              style={[styles.actionBtn, googleLoading && { opacity: 0.7 }]}
+              disabled={googleLoading}
+              onPress={async () => {
+                setGoogleLoading(true);
+                try { await handleGoogleAuth(router); }
+                catch (err: any) { alert(err?.message || 'Google sign-in failed'); }
+                finally { setGoogleLoading(false); }
+              }}
+            >
+              {googleLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <View style={styles.googleBtnInner}>
+                  <SocialSvg Icon={GoogleIcon} size={20} />
+                  <Text style={styles.actionText}>GOOGLE</Text>
+                </View>
+              )}
+            </Pressable>
           </View>
         </View>
       </ScrollView>
@@ -258,8 +263,7 @@ const styles = StyleSheet.create({
   },
   actionText: { color: "#fff", fontWeight: "700" },
   orText: { color: "#fff", textAlign: "center", marginTop: 12, opacity: 0.8 },
-  socialRow: { flexDirection: "row", justifyContent: "center", marginTop: 12 },
-  social: { width: 36, height: 36, marginHorizontal: 8 },
+  googleBtnInner: { flexDirection: "row", alignItems: "center", gap: 10 },
   containerInner: {
     flex: 1,
   },
