@@ -9,11 +9,9 @@ export function openDirections(lat: number, lng: number, label: string) {
 
   const encodedLabel = encodeURIComponent(label);
 
-  // Android: deep-link into Google Maps navigation
-  // iOS: deep-link into Apple Maps navigation
   const nativeUrl = Platform.OS === 'android'
     ? `google.navigation:q=${lat},${lng}&label=${encodedLabel}`
-    : `maps://?daddr=${lat},${lng}&dirflg=d`;
+    : `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
 
   const webFallback = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&destination_place_id=${encodedLabel}&travelmode=driving`;
 

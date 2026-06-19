@@ -1,8 +1,9 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AvatarButton from "../components/ui/avatar-button";
+import { openDirections } from "../utils/mapNavigation";
 import { Colors } from "../constants/theme";
 
 export default function PlotDetail() {
@@ -20,9 +21,7 @@ export default function PlotDetail() {
   const hasLocation = lat && lng && lat !== "" && lng !== "";
 
   const openMap = () => {
-    const label = encodeURIComponent(`Plot ${plotCode} — ${graveyardName}`);
-    const url = `https://maps.apple.com/?ll=${lat},${lng}&q=${label}`;
-    Linking.openURL(url);
+    openDirections(parseFloat(lat!), parseFloat(lng!), `Plot ${plotCode} — ${graveyardName}`);
   };
 
   const handleBook = () => {
